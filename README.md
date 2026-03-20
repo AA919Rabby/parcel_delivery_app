@@ -1,16 +1,68 @@
-# app_name
+# Parcel Delivery Flutter App
 
-A new Flutter project.
+A complete Parcel Delivery Mobile Application built with Flutter & Firebase.
 
-## Getting Started
+This app allows users to send parcels, track deliveries, and manage orders efficiently with a clean and user-friendly interface.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# Screenshots
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+[Onboarding Screen](Screenshot_1.jpg)
+
+[Login / Register Screen](Screenshot_2.jpg)
+
+[Home Screen](Screenshot_3.jpg)
+
+[Create Parcel Screen](Screenshot_4.jpg)
+
+[Parcel List Screen](Screenshot_5.jpg)
+
+[Tracking Screen](Screenshot_6.jpg)
+
+---
+
+# Demo Video
+
+YouTube: https://youtube.com/shorts/Ar53kwmFhdI?si=9JYnI9OI0lob9nzJ
+
+
+# Features
+
+- User Authentication (Login / Register / Phone OTP)
+- Parcel Booking System
+- Delivery Tracking
+- Rider Assignment
+- Order History
+- Real-time Updates (Firebase)
+- Clean & Responsive UI
+- Status Update System (Pending, Picked, Delivered)
+
+---
+
+# Tech Stack
+
+ Flutter
+ 
+ Dart
+ 
+ Firebase Authentication
+ 
+ Cloud Firestore
+ 
+ GetX (State Management)
+ 
+ Google Fonts
+
+
+
+# Author
+
+ Rabby Khan
+ 
+Flutter Developer
+
+
+# ⭐ Show Your Support
+
+If you like this project, please give it a ⭐ on GitHub!
