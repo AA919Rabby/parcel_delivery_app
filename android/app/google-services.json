@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "182786825095",
+    "project_id": "tracking-app-919",
+    "storage_bucket": "tracking-app-919.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:182786825095:android:28ae2ca948b2ab0b97d122",
+        "android_client_info": {
+          "package_name": "com.example.app_name"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9W3eV08K9ENMgxmzOPJkM90oQEGIULas"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
