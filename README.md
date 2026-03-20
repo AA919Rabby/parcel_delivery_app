@@ -8,19 +8,19 @@ This app allows users to send parcels, track deliveries, and manage orders effic
 
 # Screenshots
 
-[Onboarding Screen](Screenshot_1.jpg)
+[Onboarding Screen](Screenshot_20260320_192212.jpg)
 
-[Login / Register Screen](Screenshot_2.jpg)
+[Auth Screen](Screenshot_20260320_192227.jpg)
 
-[Home Screen](Screenshot_3.jpg)
+[Customer screen delivery status](Screenshot_20260320_192259.jpg)
 
-[Create Parcel Screen](Screenshot_4.jpg)
+[Rider delivery Screen](Screenshot_20260320_192422.jpg)
 
-[Parcel List Screen](Screenshot_5.jpg)
+[Rider screen parcel route](Screenshot_20260320_192409.jpg)
 
-[Tracking Screen](Screenshot_6.jpg)
+[Rider Tracking screen](Screenshot_20260320_192412.jpg)
 
----
+
 
 # Demo Video
 
