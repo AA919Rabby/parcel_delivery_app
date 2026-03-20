@@ -1,6 +1,6 @@
 # Parcel Delivery Flutter App
 
-A complete Parcel Delivery Mobile Application built with Flutter & Firebase.
+A complete Parcel Delivery Mobile Application built with Flutter,Animations & Firebase.
 
 This app allows users to send parcels, track deliveries, and manage orders efficiently with a clean and user-friendly interface.
 
