@@ -24,7 +24,7 @@ This app allows users to send parcels, track deliveries, and manage orders effic
 
 # Demo Video
 
-YouTube: https://youtu.be/1LtEre57ADc?si=Tl2GbhEUKE2l1d4T
+YouTube:  https://youtu.be/PXeIk4BRR0Q?si=HHk3cbUiZfEyjNJ3
 
 # Features
 
