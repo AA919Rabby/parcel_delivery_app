@@ -28,7 +28,7 @@ YouTube:  https://youtu.be/PXeIk4BRR0Q?si=HHk3cbUiZfEyjNJ3
 
 # Features
 
-- User Authentication (Login / Register / Phone OTP)
+- User Authentication (Login / Register)
 - Parcel Booking System
 - Delivery Tracking
 - Rider Assignment
