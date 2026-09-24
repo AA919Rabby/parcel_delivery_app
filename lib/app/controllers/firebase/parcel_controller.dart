@@ -1,3 +1,4 @@
+﻿import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:app_name/app/controllers/app_controllers/home_controller.dart';
 import 'package:app_name/app/controllers/firebase/auth_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,7 +14,13 @@ class ParcelController extends GetxController{
   final homeController=Get.put(HomeController());
 
   var isLoading=false.obs;
-
+  var isLoading7=false.obs;
+  var isLoading6=false.obs;
+  var isLoading5=false.obs;
+  var isLoading4=false.obs;
+  var isLoading3=false.obs;
+  var isLoading2=false.obs;
+  var isLoading1=false.obs;
 
   //sendparcel screen validator key
   final sendParcelKey=GlobalKey<FormState>();
@@ -95,3 +102,4 @@ class ParcelController extends GetxController{
   }
 
 }
+

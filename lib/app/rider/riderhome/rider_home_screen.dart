@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -72,7 +73,7 @@ class RiderHomeScreen extends StatelessWidget {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator(color: Colors.blue));
+                    return const Center(child: const SpinKitCircle(color: Colors.blue, size: 30.0));
                   }
 
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -184,7 +185,7 @@ class RiderHomeScreen extends StatelessWidget {
                                       ),
                                       onPressed: () => controller.updateParcelStatus(parcel.id, currentStatus),
                                       child: Obx(() => controller.isLoading.value
-                                          ? const SizedBox(height: 15, width: 15, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                                          ? const SizedBox(height: 15, width: 15, child: const SpinKitCircle(color: Colors.blue, size: 15.0))
                                           : Text(
                                         currentStatus.toLowerCase() == 'delivered' ? "Delivery Complete" : "Mark as Delivered",
                                         style: GoogleFonts.numans(color: Colors.white, fontSize: 11),

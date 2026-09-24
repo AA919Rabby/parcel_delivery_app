@@ -8,6 +8,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,6 +20,13 @@ class FirebaseController extends GetxController{
   final db=FirebaseFirestore.instance;
   final auth=FirebaseAuth.instance;
 
+  var isLoading7=false.obs;
+  var isLoading6=false.obs;
+  var isLoading5=false.obs;
+  var isLoading4=false.obs;
+  var isLoading3=false.obs;
+  var isLoading2=false.obs;
+  var isLoading1=false.obs;
   var isLoading=false.obs;
   var searchResult={}.obs;
   var isSearchPerformed=false.obs;
@@ -154,7 +162,7 @@ class FirebaseController extends GetxController{
   ///TODO rider login
   loginAsRider() async {
     try {
-      isLoading.value = true;
+      isLoading1.value= true;
       UserCredential credential = await auth.signInWithEmailAndPassword(
         email: riderLogin.text.trim(),
         password: riderPassword.text.trim(),
@@ -181,7 +189,7 @@ class FirebaseController extends GetxController{
     } catch (e) {
       Get.snackbar('Error', 'Login failed: $e');
     } finally {
-      isLoading.value = false;
+      isLoading1.value = false;
     }
   }
 
@@ -191,7 +199,7 @@ class FirebaseController extends GetxController{
 
   acceptOrder(String docId) async {
     try {
-      isLoading.value = true;
+      isLoading2.value = true;
 
       String currentRiderUid = auth.currentUser!.uid;
 
@@ -206,7 +214,7 @@ class FirebaseController extends GetxController{
     } catch (e) {
       Get.snackbar('Error', 'Failed to accept order: $e');
     } finally {
-      isLoading.value = false;
+      isLoading2.value = false;
     }
   }
 
@@ -225,7 +233,7 @@ class FirebaseController extends GetxController{
     }
 
     try {
-      isLoading.value = true;
+      isLoading3.value = true;
       await db.collection('parcels').doc(docId).update({
         'status': nextStatus,
       });
@@ -233,7 +241,7 @@ class FirebaseController extends GetxController{
     } catch (e) {
       Get.snackbar('Error', 'Update failed: $e');
     } finally {
-      isLoading.value = false;
+      isLoading3.value = false;
     }
   }
 
@@ -241,7 +249,7 @@ class FirebaseController extends GetxController{
 //logout
   riderLogout() async {
     try {
-      isLoading.value = true;
+      isLoading4.value = true;
       await auth.signOut();
       searchResult.clear();
       isSearchPerformed.value = false;
@@ -255,7 +263,7 @@ class FirebaseController extends GetxController{
     } catch (e) {
       Get.snackbar('Error', 'Logout failed: $e');
     } finally {
-      isLoading.value = false;
+      isLoading4.value = false;
     }
   }
 
@@ -267,7 +275,7 @@ class FirebaseController extends GetxController{
       return ;
     }
     try{
-      isLoading.value=true;
+      isLoading5.value=true;
       FirebaseFirestore.instance
           .collection('parcels')
           .where('tracking_id', isEqualTo: query)
@@ -284,7 +292,7 @@ class FirebaseController extends GetxController{
     }catch(e){
       Get.snackbar('Error','$e');
     }finally{
-      isLoading.value=false;
+      isLoading5.value=false;
     }
   }
 

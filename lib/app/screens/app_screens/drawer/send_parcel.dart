@@ -1,10 +1,11 @@
-import 'package:app_name/app/controllers/app_controllers/home_controller.dart';
+﻿import 'package:app_name/app/controllers/app_controllers/home_controller.dart';
 import 'package:app_name/app/controllers/firebase/firebase_controller.dart';
 import 'package:app_name/app/controllers/firebase/parcel_controller.dart';
 import 'package:app_name/app/widgets/custom_button.dart';
 import 'package:app_name/app/widgets/custom_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import 'package:marquee/marquee.dart';
@@ -205,7 +206,7 @@ class SendParcel extends StatelessWidget {
                                      controller: parcelController.sendParcelPrice,
                                      labelText: 'Price',
                                      prefixIcon: const Icon(Icons.payment, color: Colors.black),
-                                     hintText: '৳ BDT',
+                                     hintText: 'à§³ BDT',
                                    ),
                                  ),
                                ],
@@ -262,7 +263,7 @@ class SendParcel extends StatelessWidget {
                                        child: SizedBox(
                                          height: 20,
                                          child:   Marquee(
-                                           text: ' 🚚 DELIVERY CHARGE WILL INCLUDED IN THE PRICE. THANK YOU FOR CHOOSING US!',
+                                           text: ' ðŸšš DELIVERY CHARGE WILL INCLUDED IN THE PRICE. THANK YOU FOR CHOOSING US!',
                                            style: GoogleFonts.numans(
                                              color: Colors.black,
                                              fontSize: 12,
@@ -277,19 +278,19 @@ class SendParcel extends StatelessWidget {
                                    ],
                                  ),
                                  const SizedBox(height: 6,),
-                                 Text('** Inside Dhaka ৳60.',style: GoogleFonts.numans(
+                                 Text('** Inside Dhaka à§³60.',style: GoogleFonts.numans(
                                    color: Colors.black,
                                    fontSize: 13,
                                    fontWeight: FontWeight.w600,
                                  ),),
                                  const SizedBox(height: 6,),
-                                 Text('** Outside Dhaka ৳120.',style: GoogleFonts.numans(
+                                 Text('** Outside Dhaka à§³120.',style: GoogleFonts.numans(
                                    color: Colors.black,
                                    fontSize: 13,
                                    fontWeight: FontWeight.w600,
                                  ),),
                                  const SizedBox(height: 6,),
-                                 Text('** Shipping cost per kg ৳5',style: GoogleFonts.numans(
+                                 Text('** Shipping cost per kg à§³5',style: GoogleFonts.numans(
                                    color: Colors.black,
                                    fontSize: 13,
                                    fontWeight: FontWeight.w600,
@@ -375,7 +376,7 @@ class SendParcel extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Obx(()=> parcelController.isLoading.value?Center(
-                  child: CircularProgressIndicator(color: Colors.blue,),
+                  child: const SpinKitCircle(color: Colors.blue, size: 30.0),
                 ):CustomButton(
                   onTap: (){
                     if(parcelController.sendParcelKey.currentState!.validate()){
@@ -448,3 +449,5 @@ class SendParcel extends StatelessWidget {
    }
 
 }
+
+

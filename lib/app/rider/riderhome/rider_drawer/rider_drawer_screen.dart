@@ -1,16 +1,18 @@
 import 'package:app_name/app/controllers/firebase/firebase_controller.dart';
-import 'package:app_name/app/rider/riderhome/rider_drawer/rider_find_order.dart';
 import 'package:app_name/app/widgets/custom_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-
+import '../../controller/rider_controller.dart';
 
 class RiderDrawerScreen extends StatelessWidget {
-   RiderDrawerScreen({super.key});
-  final firebaseController=Get.put(FirebaseController());
+  RiderDrawerScreen({super.key});
+
+  final firebaseController = Get.put(FirebaseController());
+  final riderController = Get.put(RiderController());
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -18,7 +20,7 @@ class RiderDrawerScreen extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
+            /*Container(
               height:280,
               width: double.infinity,
               decoration: BoxDecoration(
@@ -93,98 +95,135 @@ class RiderDrawerScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
+            ),*/
+
+            // --- Find Order Item ---
             Padding(
-              padding: const EdgeInsets.only(top:8,left: 17,right: 17),
+              padding: const EdgeInsets.only(top: 8, left: 17, right: 17),
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   color: Colors.white.withOpacity(.7),
-                  border: Border.all(color: Colors.blue.withOpacity(.2),width: 0.5),
+                  border: Border.all(color: Colors.blue.withOpacity(.2), width: 0.5),
                   boxShadow: [
                     BoxShadow(
-                        color: Colors.black.withOpacity(.03),
-                        blurRadius: 10,
-                        spreadRadius: 10,
-                        offset: Offset(0,0)
+                      color: Colors.black.withOpacity(.03),
+                      blurRadius: 10,
+                      spreadRadius: 10,
+                      offset: const Offset(0, 0),
                     )
                   ],
                 ),
-                child: Column(
-                  children: [
-                    ListTile(
-                      onTap: (){
-                        Get.to(()=>RiderFindOrder());
-                      },
-                      leading: Icon(Icons.bookmark_border,color: Colors.blue,),
-                      title: Text('Find order',style: GoogleFonts.numans(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      ),
-                      subtitle: Text('Easy delivery',style: GoogleFonts.numans(
-                        color: Colors.grey,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: IntrinsicHeight(
+                    child: Row(
+                      children: [
+                        // Left-side low width, full height blue bar
+                        Obx(() => Container(
+                          width: riderController.selectedItemIndex.value == 0 ? 5.0 : 0.0,
+                          color: Colors.blue,
+                        )),
+                        Expanded(
+                          child: ListTile(
+                            onTap: () {
+                              riderController.goToFindOrder();
+                            },
+                            leading: const Icon(Icons.bookmark_border, color: Colors.blue),
+                            title: Text(
+                              'Find order',
+                              style: GoogleFonts.numans(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            subtitle: Text(
+                              'Easy delivery',
+                              style: GoogleFonts.numans(
+                                color: Colors.grey,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
+
+            // --- Logout Item ---
             Padding(
-              padding: const EdgeInsets.only(top:8,left: 17,right: 17),
+              padding: const EdgeInsets.only(top: 8, left: 17, right: 17),
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: Colors.blue.withOpacity(.2),width: 0.5),
+                  border: Border.all(color: Colors.blue.withOpacity(.2), width: 0.5),
                   color: Colors.white.withOpacity(.7),
                   boxShadow: [
                     BoxShadow(
-                        color: Colors.black.withOpacity(.03),
-                        blurRadius: 10,
-                        spreadRadius: 10,
-                        offset: Offset(0,0)
+                      color: Colors.black.withOpacity(.03),
+                      blurRadius: 10,
+                      spreadRadius: 10,
+                      offset: const Offset(0, 0),
                     )
                   ],
                 ),
-                child: Column(
-                  children: [
-                    ListTile(
-                      onTap: (){
-                        logout();
-                      },
-                      leading: Icon(Icons.logout,color: Colors.red,),
-                      title: Text('Logout',style: GoogleFonts.numans(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      ),
-                      subtitle: Text('Logout your account',style: GoogleFonts.numans(
-                        color: Colors.grey,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: IntrinsicHeight(
+                    child: Row(
+                      children: [
+                        // Left-side low width, full height red bar
+                        Obx(() => Container(
+                          width: riderController.selectedItemIndex.value == 1 ? 5.0 : 0.0,
+                          color: Colors.red,
+                        )),
+                        Expanded(
+                          child: ListTile(
+                            onTap: () {
+                              riderController.selectLogout();
+                              logout();
+                            },
+                            leading: const Icon(Icons.logout, color: Colors.red),
+                            title: Text(
+                              'Logout',
+                              style: GoogleFonts.numans(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            subtitle: Text(
+                              'Logout your account',
+                              style: GoogleFonts.numans(
+                                color: Colors.grey,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
-            const SizedBox(height: 17,),
+            const SizedBox(height: 17),
           ],
         ),
       ),
     );
   }
 
-  //helper widget for logout
-  logout(){
+  // Helper widget for logout
+  logout() {
     Get.dialog(
       barrierDismissible: false,
       AlertDialog(
@@ -197,52 +236,67 @@ class RiderDrawerScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('Logout ?',style: GoogleFonts.numans(
-                color: Colors.black,
-                fontSize: 27,
-                fontWeight: FontWeight.bold,
-              ),),
-              const SizedBox(height: 10,),
-              Text('After logout you can login back.',style: GoogleFonts.numans(
-                color: Colors.grey,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-              ),),
+              Text(
+                'Logout ?',
+                style: GoogleFonts.numans(
+                  color: Colors.black,
+                  fontSize: 27,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'After logout you can login back.',
+                style: GoogleFonts.numans(
+                  color: Colors.grey,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
         ),
         content: Padding(
-          padding: const EdgeInsets.only(top: 7,left: 20,right: 20),
+          padding: const EdgeInsets.only(top: 7, left: 20, right: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: ()=>Get.back(),
-                child: Text('No',style: GoogleFonts.numans(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),),
+                onTap: () => Get.back(),
+                child: Text(
+                  'No',
+                  style: GoogleFonts.numans(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               GestureDetector(
-                onTap: (){
-                 firebaseController.riderLogout();
+                onTap: () {
+                  firebaseController.riderLogout();
                 },
-                child: Text('Yes',style: GoogleFonts.numans(
-                  color: Colors.red,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),),
+                child: Text(
+                  'Yes',
+                  style: GoogleFonts.numans(
+                    color: Colors.red,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),
         ),
       ),
-    );
+    ).then((_) {
+      // Clears selection via controller when dialog closes
+      riderController.clearSelection();
+    });
   }
 
-//helper widget for change name
-  changeName(){
+  // Helper widget for change name
+  changeName() {
     Get.dialog(
       barrierDismissible: false,
       AlertDialog(
@@ -255,43 +309,53 @@ class RiderDrawerScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 15,),
-              Text('Enter new username',style: GoogleFonts.numans(
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),),
-              const SizedBox(height: 20,),
-              CustomAuth(labelText: 'Username',
-                  prefixIcon: Icon(Icons.person,color: Colors.black,),
-                  hintText: 'New username'),
-              const SizedBox(height: 10,),
+              const SizedBox(height: 15),
+              Text(
+                'Enter new username',
+                style: GoogleFonts.numans(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 20),
+              CustomAuth(
+                labelText: 'Username',
+                prefixIcon: const Icon(Icons.person, color: Colors.black),
+                hintText: 'New username',
+              ),
+              const SizedBox(height: 10),
             ],
           ),
         ),
         content: Padding(
-          padding: const EdgeInsets.only(top: 7,left: 20,right: 20),
+          padding: const EdgeInsets.only(top: 7, left: 20, right: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: ()=>Get.back(),
-                child: Text('Back',style: GoogleFonts.numans(
-                  color: Colors.black,
+                onTap: () => Get.back(),
+                child: Text(
+                  'Back',
+                  style: GoogleFonts.numans(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Text(
+                'Confirm',
+                style: GoogleFonts.numans(
+                  color: Colors.green,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                ),),
+                ),
               ),
-              Text('Confirm',style: GoogleFonts.numans(
-                color: Colors.green,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),),
             ],
           ),
         ),
       ),
     );
   }
-
 }

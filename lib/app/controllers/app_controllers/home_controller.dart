@@ -1,3 +1,4 @@
+﻿import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
@@ -34,3 +35,4 @@ calculateFinalPrice(String city,String weightText){
 
 
 }
+

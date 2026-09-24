@@ -1,3 +1,4 @@
+﻿import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:app_name/app/controllers/firebase/auth_controller.dart';
 import 'package:app_name/app/controllers/firebase/firebase_controller.dart';
 import 'package:app_name/app/rider/riderhome/rider_home_screen.dart';
@@ -49,3 +50,4 @@ class IntroController extends GetxController {
     }
   }
 }
+

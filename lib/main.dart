@@ -8,6 +8,7 @@ import 'package:app_name/app/screens/auths/register.dart';
 import 'package:app_name/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 
@@ -31,3 +32,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

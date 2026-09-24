@@ -1,5 +1,6 @@
-import 'package:app_name/app/controllers/firebase/auth_controller.dart';
+﻿import 'package:app_name/app/controllers/firebase/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:app_name/app/screens/auths/login.dart';
@@ -132,7 +133,7 @@ class Register extends StatelessWidget {
                     ),
                     const SizedBox(height: 25),
                   Obx(()=> authController.isLoading.value?Center(
-                    child: CircularProgressIndicator(color: Colors.blue,),
+                    child: const SpinKitCircle(color: Colors.blue, size: 30.0),
                   ):Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: CustomButton(
@@ -188,3 +189,4 @@ class Register extends StatelessWidget {
     );
   }
 }
+
