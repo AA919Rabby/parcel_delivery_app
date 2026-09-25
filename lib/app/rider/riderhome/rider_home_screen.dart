@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-
 class RiderHomeScreen extends StatelessWidget {
   RiderHomeScreen({super.key});
 
@@ -59,7 +58,7 @@ class RiderHomeScreen extends StatelessWidget {
                         child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(10)),
-                            child: const Icon(Icons.menu, color: Colors.white, size: 28)
+                            child: const Icon(Icons.menu_open, color: Colors.white, size: 28)
                         )),
                     const SizedBox(height: 15),
                     Text("Check point",
@@ -84,22 +83,29 @@ class RiderHomeScreen extends StatelessWidget {
                     return const Center(child: SpinKitCircle(color: Colors.blueAccent, size: 30.0));
                   }
 
-                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  var activeParcels = [];
+                  if (snapshot.hasData) {
+                    activeParcels = snapshot.data!.docs.where((doc) => doc['status'].toString().toLowerCase() != 'delivery complete').toList();
+                  }
+
+                  // Enhanced Empty View
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty || activeParcels.isEmpty) {
                     return Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(Icons.hourglass_empty_rounded, color: Colors.grey.shade400, size: 80),
+                          Icon(Icons.inbox_outlined, color: Colors.grey.shade400, size: 80),
                           const SizedBox(height: 15),
-                          Text("No parcel for delivery", style: GoogleFonts.numans(
-                              color: Colors.grey.shade600, fontSize: 18, fontWeight: FontWeight.bold)),
+                          Text("Checkpoint is empty", style: GoogleFonts.numans(
+                              color: Colors.grey.shade700, fontSize: 18, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 5),
+                          Text("No parcels assigned for delivery.", style: GoogleFonts.numans(
+                              color: Colors.grey.shade500, fontSize: 14, fontWeight: FontWeight.w500)),
                         ],
                       ),
                     );
                   }
-
-                  var activeParcels = snapshot.data!.docs.where((doc) => doc['status'].toString().toLowerCase() != 'delivery complete').toList();
 
                   return ListView.builder(
                     itemCount: activeParcels.length,
@@ -223,7 +229,7 @@ class RiderHomeScreen extends StatelessWidget {
                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                       ),
                                       onPressed: () => controller.updateParcelStatus(parcel.id, currentStatus),
-                                      child: Obx(() => controller.isLoading8.value
+                                      child: Obx(() => controller.isLoading.value
                                           ? const SizedBox(height: 18, width: 18, child: SpinKitCircle(color: Colors.white, size: 18.0))
                                           : Text(
                                         currentStatus.toLowerCase() == 'delivered' ? "Delivery Complete" : "Mark Delivered",

@@ -158,8 +158,10 @@ class HomeScreen extends StatelessWidget {
                               const SizedBox(width: 8),
                               Text("Tracking Status", style: GoogleFonts.numans(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black87)),
                               const Spacer(),
+
+                              // Customer explicitly calling default number: 01402977919
                               GestureDetector(
-                                onTap: () {}, // Make sure call logic is added if needed
+                                onTap: () => firebaseController.makePhoneCall('01402977919'),
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                                   decoration: BoxDecoration(color: Colors.green.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
@@ -176,11 +178,14 @@ class HomeScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 15),
 
-                          TrackStep("Received at warehouse", true, isLast: false),
+                          // Correctly ordered track step logic
+                          TrackStep("Pending / Received", true, isLast: false),
+
                           TrackStep(
                               "Handed over to Rider",
-                              status == "handed over to rider" || status == "delivery to rider" || status == "delivered" || status == "delivery complete",
+                              status == "delivery to rider" || status == "delivered" || status == "delivery complete",
                               isLast: false),
+
                           TrackStep(
                               "Delivered",
                               status == "delivered" || status == "delivery complete",

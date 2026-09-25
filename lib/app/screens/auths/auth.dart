@@ -18,48 +18,49 @@ class Auth extends StatelessWidget {
       backgroundColor: Colors.white, // Clean white base
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Spacer(),
-              Lottie.asset('assets/anime/auth.json',
-                height: 350,
-                width: 300,
-                fit: BoxFit.cover,
-              ),
-              const SizedBox(height: 20),
-              Text(
-                "Welcome to Ideal 360",
-                style: GoogleFonts.numans(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue.shade800
+          child: SingleChildScrollView( // Added to ensure perfect centering without overflow
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Lottie.asset('assets/anime/auth.json',
+                  height: 350,
+                  width: 300,
+                  fit: BoxFit.cover,
                 ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                "Your fast & reliable delivery partner",
-                style: GoogleFonts.numans(
-                    fontSize: 14,
-                    color: Colors.grey.shade600
-                ),
-              ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 55,
-                  child: CustomButton(
-                    onTap: () => showSelectionDialog(context),
-                    color: Colors.blueAccent,
-                    label: 'Get Started',
-                    labelColor: Colors.white,
+                const SizedBox(height: 20),
+                Text(
+                  "Welcome to Ideal 360",
+                  style: GoogleFonts.numans(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue.shade800
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 10),
+                Text(
+                  "Your fast & reliable delivery partner",
+                  style: GoogleFonts.numans(
+                      fontSize: 14,
+                      color: Colors.grey.shade600
+                  ),
+                ),
+                const SizedBox(height: 40),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 55,
+                    child: CustomButton(
+                      onTap: () => showSelectionDialog(context),
+                      color: Colors.blueAccent,
+                      label: 'Get Started',
+                      labelColor: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

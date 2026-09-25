@@ -1,5 +1,7 @@
-﻿import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:app_name/app/controllers/firebase/firebase_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,7 +9,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class RecentlySend extends StatelessWidget {
-  const RecentlySend({super.key});
+  RecentlySend({super.key});
+
+  final firebaseController = Get.put(FirebaseController()); // Initialize controller for making calls
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +99,7 @@ class RecentlySend extends StatelessWidget {
                       itemBuilder: (context, index) {
                         var parcel = snapshot.data!.docs[index];
                         String statusStr = parcel['status'].toString().toLowerCase();
+
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           child: Container(
@@ -191,51 +196,76 @@ class RecentlySend extends StatelessWidget {
                                       ),
                                     ),
 
-                                    // Cancel Button Logic
-                                    GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                            title: Text('Cancel Order?', style: GoogleFonts.numans(fontWeight: FontWeight.bold)),
-                                            content: Text('Are you sure you want to cancel and remove this order?', style: GoogleFonts.numans()),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () => Navigator.pop(context),
-                                                child: Text('No', style: GoogleFonts.numans(color: Colors.blueAccent, fontWeight: FontWeight.bold)),
-                                              ),
-                                              ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                    backgroundColor: Colors.redAccent,
-                                                    elevation: 0,
-                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
-                                                ),
-                                                onPressed: () async {
-                                                  Navigator.pop(context);
-                                                  await FirebaseFirestore.instance.collection('parcels').doc(parcel.id).delete();
-                                                  Get.snackbar('Cancelled', 'Order has been successfully cancelled and removed.', snackPosition: SnackPosition.TOP, backgroundColor: Colors.redAccent, colorText: Colors.white, margin: const EdgeInsets.all(10));
-                                                },
-                                                child: Text('Yes, Cancel', style: GoogleFonts.numans(color: Colors.white, fontWeight: FontWeight.bold)),
-                                              ),
-                                            ],
+                                    Row(
+                                      children: [
+                                        // Call Rider Button linked strictly to 01402977919
+                                        GestureDetector(
+                                          onTap: () => firebaseController.makePhoneCall('01402977919'),
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                            margin: const EdgeInsets.only(right: 8),
+                                            decoration: BoxDecoration(
+                                                color: Colors.green.withOpacity(0.1),
+                                                borderRadius: BorderRadius.circular(20)
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                const Icon(CupertinoIcons.phone_fill, color: Colors.green, size: 14),
+                                                const SizedBox(width: 4),
+                                                Text('Call Rider', style: GoogleFonts.numans(color: Colors.green.shade700, fontWeight: FontWeight.w700, fontSize: 12)),
+                                              ],
+                                            ),
                                           ),
-                                        );
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                        decoration: BoxDecoration(
-                                          color: Colors.red.withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(20),
                                         ),
-                                        child: Row(
-                                          children: [
-                                            const Icon(Icons.cancel_outlined, color: Colors.redAccent, size: 14),
-                                            const SizedBox(width: 4),
-                                            Text('Cancel', style: GoogleFonts.numans(fontSize: 12, color: Colors.redAccent, fontWeight: FontWeight.bold)),
-                                          ],
-                                        ),
-                                      ),
+
+                                        // Cancel Button - Only shows when it's pending/received at warehouse
+                                        if (statusStr == 'pending' || statusStr == 'received at warehouse')
+                                          GestureDetector(
+                                            onTap: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) => AlertDialog(
+                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                                  title: Text('Cancel Order?', style: GoogleFonts.numans(fontWeight: FontWeight.bold)),
+                                                  content: Text('Are you sure you want to cancel and remove this order?', style: GoogleFonts.numans()),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () => Navigator.pop(context),
+                                                      child: Text('No', style: GoogleFonts.numans(color: Colors.blueAccent, fontWeight: FontWeight.bold)),
+                                                    ),
+                                                    ElevatedButton(
+                                                      style: ElevatedButton.styleFrom(
+                                                          backgroundColor: Colors.redAccent,
+                                                          elevation: 0,
+                                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
+                                                      ),
+                                                      onPressed: () async {
+                                                        Navigator.pop(context);
+                                                        await FirebaseFirestore.instance.collection('parcels').doc(parcel.id).delete();
+                                                        Get.snackbar('Cancelled', 'Order has been successfully cancelled and removed.', snackPosition: SnackPosition.TOP, backgroundColor: Colors.redAccent, colorText: Colors.white, margin: const EdgeInsets.all(10));
+                                                      },
+                                                      child: Text('Yes, Cancel', style: GoogleFonts.numans(color: Colors.white, fontWeight: FontWeight.bold)),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                              decoration: BoxDecoration(
+                                                color: Colors.red.withOpacity(0.1),
+                                                borderRadius: BorderRadius.circular(20),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  const Icon(Icons.cancel_outlined, color: Colors.redAccent, size: 14),
+                                                  const SizedBox(width: 4),
+                                                  Text('Cancel', style: GoogleFonts.numans(fontSize: 12, color: Colors.redAccent, fontWeight: FontWeight.bold)),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                      ],
                                     ),
                                   ],
                                 ),
