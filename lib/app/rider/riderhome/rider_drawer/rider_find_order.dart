@@ -11,7 +11,6 @@ import 'package:latlong2/latlong.dart';
 
 
 
-
 class RiderFindOrder extends StatelessWidget {
   RiderFindOrder({super.key});
   final firebaseController=Get.put(FirebaseController());

@@ -27,7 +27,7 @@ class RecentlySend extends StatelessWidget {
                 height:MediaQuery.of(context).size.height*0.18,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                 color: Colors.blue,
+                  color: Colors.blue,
                   boxShadow: [
                     BoxShadow(
                         color: Colors.black.withOpacity(.1),
@@ -36,7 +36,7 @@ class RecentlySend extends StatelessWidget {
                         offset: Offset(0,0)
                     )
                   ],
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20),
                   ),
@@ -51,7 +51,7 @@ class RecentlySend extends StatelessWidget {
                           onTap: (){
                             Get.back();
                           },
-                          child: Icon(Icons.arrow_back,color: Colors.white,size: 27,)),
+                          child: const Icon(Icons.arrow_back,color: Colors.white,size: 27,)),
                       const SizedBox(height: 7,),
                       Text('Recently send',style: GoogleFonts.numans(
                         color: Colors.white,
@@ -80,7 +80,7 @@ class RecentlySend extends StatelessWidget {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: const SpinKitCircle(color: Colors.blueAccent, size: 30.0));
+                      return const Center(child: SpinKitCircle(color: Colors.blueAccent, size: 30.0));
                     }
 
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -89,7 +89,7 @@ class RecentlySend extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(Icons.card_giftcard,color: Colors.grey,size: 60,),
+                            const Icon(Icons.card_giftcard,color: Colors.grey,size: 60,),
                             const SizedBox(height: 4,),
                             Text("No parcels found", style: GoogleFonts.numans(
                                 color: Colors.grey, fontSize: 16, fontWeight: FontWeight.bold)),
@@ -217,18 +217,86 @@ class RecentlySend extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 10),
 
-                                  // Status
-                                  Text(
-                                    'Status: ${parcel['status']}',
-                                    style: GoogleFonts.numans(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
-                                      color: parcel['status'].toString().toLowerCase() == 'pending' || parcel['status'].toString().toLowerCase() == 'received at warehouse'
-                                          ? Colors.black
-                                          : parcel['status'].toString().toLowerCase() == 'delivered' || parcel['status'].toString().toLowerCase() == 'delivery complete'
-                                          ? Colors.green
-                                          : Colors.blue,
-                                    ),
+                                  // Status & Cancel Button Row
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          'Status: ${parcel['status']}',
+                                          style: GoogleFonts.numans(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                            color: parcel['status'].toString().toLowerCase() == 'pending' || parcel['status'].toString().toLowerCase() == 'received at warehouse'
+                                                ? Colors.black
+                                                : parcel['status'].toString().toLowerCase() == 'delivered' || parcel['status'].toString().toLowerCase() == 'delivery complete'
+                                                ? Colors.green
+                                                : Colors.blue,
+                                          ),
+                                        ),
+                                      ),
+
+                                      // Added Cancel Button logic here
+                                      GestureDetector(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              title: Text('Cancel Order?', style: GoogleFonts.numans(fontWeight: FontWeight.bold)),
+                                              content: Text('Are you sure you want to cancel and remove this order?', style: GoogleFonts.numans()),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () => Navigator.pop(context), // Close Dialog
+                                                  child: Text('No', style: GoogleFonts.numans(color: Colors.blue)),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    Navigator.pop(context); // Close dialog first
+                                                    // Delete the document from Firebase
+                                                    await FirebaseFirestore.instance
+                                                        .collection('parcels')
+                                                        .doc(parcel.id)
+                                                        .delete();
+
+                                                    Get.snackbar(
+                                                      'Cancelled',
+                                                      'Order has been successfully cancelled and removed.',
+                                                      snackPosition: SnackPosition.TOP,
+                                                      backgroundColor: Colors.redAccent,
+                                                      colorText: Colors.white,
+                                                      margin: const EdgeInsets.all(10),
+                                                    );
+                                                  },
+                                                  child: Text('Yes, Cancel', style: GoogleFonts.numans(color: Colors.red, fontWeight: FontWeight.bold)),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                          decoration: BoxDecoration(
+                                              color: Colors.red.withOpacity(0.1),
+                                              borderRadius: BorderRadius.circular(5),
+                                              border: Border.all(color: Colors.red.withOpacity(0.5), width: 0.5)
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              const Icon(Icons.cancel_outlined, color: Colors.red, size: 14),
+                                              const SizedBox(width: 4),
+                                              Text(
+                                                'Cancel',
+                                                style: GoogleFonts.numans(
+                                                  fontSize: 12,
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -237,7 +305,7 @@ class RecentlySend extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    'à§³${parcel['total_amount']}',
+                                    '৳${parcel['total_amount']}',
                                     style: GoogleFonts.numans(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black,
@@ -246,8 +314,8 @@ class RecentlySend extends StatelessWidget {
                                   ),
                                   Text(
                                     parcel['receiver_address'].toString().toLowerCase().contains('dhaka')
-                                        ? '+à§³60 Fee'
-                                        : '+à§³120 Fee',
+                                        ? '+৳60 Fee'
+                                        : '+৳120 Fee',
                                     style: GoogleFonts.numans(fontSize: 10, color: Colors.grey),
                                   ),
                                 ],
@@ -265,4 +333,3 @@ class RecentlySend extends StatelessWidget {
     );
   }
 }
-

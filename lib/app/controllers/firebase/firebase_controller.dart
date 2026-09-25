@@ -165,7 +165,7 @@ class FirebaseController extends GetxController{
   ///TODO rider login
   loginAsRider() async {
     try {
-      isLoading1.value= true;
+      isLoading.value= true;
       UserCredential credential = await auth.signInWithEmailAndPassword(
         email: riderLogin.text.trim(),
         password: riderPassword.text.trim(),
@@ -192,11 +192,9 @@ class FirebaseController extends GetxController{
     } catch (e) {
       Get.snackbar('Error', 'Login failed: $e');
     } finally {
-      isLoading1.value = false;
+      isLoading.value = false;
     }
   }
-
-
 
 
 
