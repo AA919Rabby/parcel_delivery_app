@@ -97,7 +97,7 @@ class RecentlySend extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 20),
                       itemBuilder: (context, index) {
                         var parcel = snapshot.data!.docs[index];
-                        String rawStatus = parcel['status'].toString().toLowerCase();
+                        String rawStatus = parcel['status'].toString().toLowerCase().trim();
 
                         String displayStatus = (rawStatus == 'received at warehouse') ? 'Pending' : parcel['status'];
 
@@ -200,26 +200,28 @@ class RecentlySend extends StatelessWidget {
 
                                     Row(
                                       children: [
-                                        // USING DYNAMIC FIREBASE LOGIC ONLY
-                                        GestureDetector(
-                                          onTap: () => firebaseController.makePhoneCall(parcel['rider_phone'] ?? ""),
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                            margin: const EdgeInsets.only(right: 8),
-                                            decoration: BoxDecoration(
-                                                color: Colors.green.withOpacity(0.1),
-                                                borderRadius: BorderRadius.circular(20)
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                const Icon(CupertinoIcons.phone_fill, color: Colors.green, size: 14),
-                                                const SizedBox(width: 4),
-                                                Text('Call Rider', style: GoogleFonts.numans(color: Colors.green.shade700, fontWeight: FontWeight.w700, fontSize: 12)),
-                                              ],
+                                        // ONLY SHOW CALL RIDER IF THE ORDER IS NOT PENDING
+                                        if (rawStatus != 'pending' && rawStatus != 'received at warehouse')
+                                          GestureDetector(
+                                            onTap: () => firebaseController.makePhoneCall(parcel['rider_phone'] ?? ""),
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                              margin: const EdgeInsets.only(right: 8),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.green.withOpacity(0.1),
+                                                  borderRadius: BorderRadius.circular(20)
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  const Icon(CupertinoIcons.phone_fill, color: Colors.green, size: 14),
+                                                  const SizedBox(width: 4),
+                                                  Text('Call Rider', style: GoogleFonts.numans(color: Colors.green.shade700, fontWeight: FontWeight.w700, fontSize: 12)),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
 
+                                        // Cancel button stays visible when order is pending
                                         if (rawStatus == 'pending' || rawStatus == 'received at warehouse')
                                           GestureDetector(
                                             onTap: () {
