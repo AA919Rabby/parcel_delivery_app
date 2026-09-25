@@ -30,7 +30,7 @@ class RiderHomeScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // Header Section with Gradient (FIXED OVERFLOW ERROR)
+            // Header Section with Gradient (Prevents overflow)
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -48,10 +48,10 @@ class RiderHomeScreen extends StatelessWidget {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 25), // Uses padding instead of fixed height
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 25),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min, // Prevents overflow completely
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     GestureDetector(
                         onTap: () => _scaffoldKey.currentState!.openDrawer(),
@@ -83,9 +83,13 @@ class RiderHomeScreen extends StatelessWidget {
                     return const Center(child: SpinKitCircle(color: Colors.blueAccent, size: 30.0));
                   }
 
+                  // FILTERS OUT BOTH 'delivered' AND 'delivery complete' IMMEDIATELY
                   var activeParcels = [];
                   if (snapshot.hasData) {
-                    activeParcels = snapshot.data!.docs.where((doc) => doc['status'].toString().toLowerCase() != 'delivery complete').toList();
+                    activeParcels = snapshot.data!.docs.where((doc) {
+                      String status = doc['status'].toString().toLowerCase().trim();
+                      return status != 'delivered' && status != 'delivery complete';
+                    }).toList();
                   }
 
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty || activeParcels.isEmpty) {
@@ -118,7 +122,6 @@ class RiderHomeScreen extends StatelessWidget {
                       String displayAddress = data['receiver_address'] ?? data['address'] ?? "Address not provided";
                       String pickupAddress = data['pickup_address'] ?? data['sender_address'] ?? "Pickup point";
 
-                      // Using dynamic DB phone numbers
                       String senderPhone = data['sender_phone'] ?? "";
                       String receiverPhone = data['receiver_phone'] ?? "";
 
@@ -144,12 +147,12 @@ class RiderHomeScreen extends StatelessWidget {
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                     decoration: BoxDecoration(
-                                        color: currentStatus.toLowerCase() == 'delivered' ? Colors.green.withOpacity(0.1) : Colors.orange.withOpacity(0.1),
+                                        color: Colors.orange.withOpacity(0.1),
                                         borderRadius: BorderRadius.circular(20)
                                     ),
                                     child: Text(currentStatus.toUpperCase(),
                                         style: GoogleFonts.numans(fontSize: 10, fontWeight: FontWeight.bold,
-                                            color: currentStatus.toLowerCase() == 'delivered' ? Colors.green.shade700 : Colors.orange.shade700)),
+                                            color: Colors.orange.shade700)),
                                   )
                                 ],
                               ),
@@ -158,7 +161,7 @@ class RiderHomeScreen extends StatelessWidget {
                                 child: Divider(color: Color(0xFFEEEEEE), thickness: 1),
                               ),
 
-                              // PICKUP / SENDER DETAILS
+                              // SENDER / PICKUP DETAILS
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -170,7 +173,6 @@ class RiderHomeScreen extends StatelessWidget {
                                       children: [
                                         Text("Sender: $pickupAddress", style: GoogleFonts.numans(fontSize: 13, color: Colors.grey.shade700)),
                                         const SizedBox(height: 4),
-                                        // Clickable Sender Phone
                                         GestureDetector(
                                           onTap: () => controller.makePhoneCall(senderPhone),
                                           child: Row(
@@ -188,7 +190,7 @@ class RiderHomeScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 15),
 
-                              // DROP / RECEIVER DETAILS
+                              // RECEIVER / DROP DETAILS
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -213,7 +215,6 @@ class RiderHomeScreen extends StatelessWidget {
                                           ],
                                         ),
                                         const SizedBox(height: 6),
-                                        // Clickable Receiver Phone
                                         GestureDetector(
                                           onTap: () => controller.makePhoneCall(receiverPhone),
                                           child: Container(
@@ -237,25 +238,24 @@ class RiderHomeScreen extends StatelessWidget {
 
                               const SizedBox(height: 20),
 
-                              // ACTION BUTTONS
+                              // ACTION BUTTONS (Single Click "Mark Delivered")
                               Row(
                                 children: [
-                                  if (currentStatus.toLowerCase() != 'delivered')
-                                    Expanded(
-                                      flex: 2,
-                                      child: ElevatedButton.icon(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.blue.shade50,
-                                          elevation: 0,
-                                          padding: const EdgeInsets.symmetric(vertical: 12),
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                        ),
-                                        onPressed: () => controller.goToNavigation(displayAddress),
-                                        icon: const Icon(CupertinoIcons.location_fill, size: 18, color: Colors.blueAccent),
-                                        label: Text("Route", style: GoogleFonts.numans(color: Colors.blueAccent, fontSize: 13, fontWeight: FontWeight.bold)),
+                                  Expanded(
+                                    flex: 2,
+                                    child: ElevatedButton.icon(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.blue.shade50,
+                                        elevation: 0,
+                                        padding: const EdgeInsets.symmetric(vertical: 12),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                       ),
+                                      onPressed: () => controller.goToNavigation(displayAddress),
+                                      icon: const Icon(CupertinoIcons.location_fill, size: 18, color: Colors.blueAccent),
+                                      label: Text("Route", style: GoogleFonts.numans(color: Colors.blueAccent, fontSize: 13, fontWeight: FontWeight.bold)),
                                     ),
-                                  if (currentStatus.toLowerCase() != 'delivered') const SizedBox(width: 10),
+                                  ),
+                                  const SizedBox(width: 10),
 
                                   Expanded(
                                     flex: 3,
@@ -263,14 +263,14 @@ class RiderHomeScreen extends StatelessWidget {
                                       style: ElevatedButton.styleFrom(
                                         elevation: 0,
                                         padding: const EdgeInsets.symmetric(vertical: 12),
-                                        backgroundColor: currentStatus.toLowerCase() == 'delivered' ? Colors.green : Colors.blueAccent,
+                                        backgroundColor: Colors.blueAccent,
                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                       ),
                                       onPressed: () => controller.updateParcelStatus(parcel.id, currentStatus),
-                                      child: Obx(() => controller.isLoading.value
+                                      child: Obx(() => controller.isLoading8.value
                                           ? const SizedBox(height: 18, width: 18, child: SpinKitCircle(color: Colors.white, size: 18.0))
                                           : Text(
-                                        currentStatus.toLowerCase() == 'delivered' ? "Delivery Complete" : "Mark Delivered",
+                                        "Mark Delivered",
                                         style: GoogleFonts.numans(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
                                       )),
                                     ),
