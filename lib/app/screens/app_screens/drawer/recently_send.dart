@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -80,7 +80,7 @@ class RecentlySend extends StatelessWidget {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: const SpinKitCircle(color: Colors.blue, size: 30.0));
+                      return const Center(child: const SpinKitCircle(color: Colors.blueAccent, size: 30.0));
                     }
 
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -237,7 +237,7 @@ class RecentlySend extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    '৳${parcel['total_amount']}',
+                                    'à§³${parcel['total_amount']}',
                                     style: GoogleFonts.numans(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black,
@@ -246,8 +246,8 @@ class RecentlySend extends StatelessWidget {
                                   ),
                                   Text(
                                     parcel['receiver_address'].toString().toLowerCase().contains('dhaka')
-                                        ? '+৳60 Fee'
-                                        : '+৳120 Fee',
+                                        ? '+à§³60 Fee'
+                                        : '+à§³120 Fee',
                                     style: GoogleFonts.numans(fontSize: 10, color: Colors.grey),
                                   ),
                                 ],
@@ -265,3 +265,4 @@ class RecentlySend extends StatelessWidget {
     );
   }
 }
+

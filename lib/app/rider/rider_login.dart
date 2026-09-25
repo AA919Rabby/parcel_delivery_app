@@ -80,23 +80,36 @@ class RiderLogin extends StatelessWidget {
                     const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18),
-                      child: CustomAuth(
-                        validator: (value){
-                          if(value!.isEmpty){
-                            return 'required';
-                          }return null;
-                        },
-                        controller: firebaseController.riderPassword,
-                        labelText: 'Password',
-                        prefixIcon: const Icon(Icons.key, color: Colors.black),
-                        obscureText: true,
-                        suffixIcon: const Icon(Icons.visibility_off, color: Colors.black),
-                        hintText: 'Enter your password',
+                      child: Obx(
+                            () => CustomAuth(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'required';
+                            }
+                            return null;
+                          },
+                          controller: firebaseController.riderPassword,
+                          labelText: 'Password',
+                          prefixIcon: const Icon(Icons.key, color: Colors.black),
+                          obscureText: firebaseController.isPasswordHidden.value,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              firebaseController.isPasswordHidden.value
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.black,
+                            ),
+                            onPressed: () {
+                              firebaseController.togglePasswordVisibility();
+                            },
+                          ),
+                          hintText: 'Enter your password',
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),
                     Obx(()=> firebaseController.isLoading.value?Center(
-                      child: const SpinKitCircle(color: Colors.blue, size: 30.0),
+                      child: const SpinKitCircle(color: Colors.blueAccent, size: 30.0),
                     ):Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: CustomButton(
@@ -122,5 +135,6 @@ class RiderLogin extends StatelessWidget {
     );
   }
 }
+
 
 

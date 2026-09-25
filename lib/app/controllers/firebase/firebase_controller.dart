@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 import 'package:http/http.dart'as http;
 import 'package:app_name/app/rider/riderhome/rider_home_screen.dart';
 import 'package:app_name/app/screens/auths/auth.dart';
@@ -19,8 +19,11 @@ class FirebaseController extends GetxController{
   final searchController=TextEditingController();
   final db=FirebaseFirestore.instance;
   final auth=FirebaseAuth.instance;
+  var isPasswordHidden = true.obs;
 
-  var isLoading7=false.obs;
+  void togglePasswordVisibility() {
+    isPasswordHidden.value = !isPasswordHidden.value;
+  }  var isLoading7=false.obs;
   var isLoading6=false.obs;
   var isLoading5=false.obs;
   var isLoading4=false.obs;
@@ -303,3 +306,4 @@ class FirebaseController extends GetxController{
   }
 
 }
+

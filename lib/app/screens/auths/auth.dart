@@ -1,4 +1,4 @@
-import 'package:app_name/app/configs/my_themes.dart';
+﻿import 'package:app_name/app/configs/my_themes.dart';
 import 'package:app_name/app/controllers/app_controllers/home_controller.dart';
 import 'package:app_name/app/controllers/firebase/auth_controller.dart';
 import 'package:app_name/app/rider/rider_login.dart';
@@ -169,4 +169,5 @@ class Auth extends StatelessWidget {
 
 
 }
+
 

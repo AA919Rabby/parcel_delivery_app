@@ -7,11 +7,10 @@ import 'package:app_name/app/screens/auths/register.dart';
 import 'package:app_name/app/widgets/custom_auth.dart';
 import 'package:app_name/app/widgets/custom_button.dart';
 
-
-
 class Login extends StatelessWidget {
-   Login({super.key});
-  final authController=Get.put(AuthController());
+  Login({super.key});
+  final authController = Get.put(AuthController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,8 +43,7 @@ class Login extends StatelessWidget {
                       spreadRadius: 10,
                       offset: const Offset(0, 0),
                     )
-                  ]
-              ),
+                  ]),
               child: Form(
                 key: authController.loginKey,
                 child: Column(
@@ -63,10 +61,11 @@ class Login extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18),
                       child: CustomAuth(
-                        validator: (value){
-                          if(value!.isEmpty){
+                        validator: (value) {
+                          if (value!.isEmpty) {
                             return 'required';
-                          }if(GetUtils.isEmail(value)==false){
+                          }
+                          if (GetUtils.isEmail(value) == false) {
                             return 'invalid email';
                           }
                           return null;
@@ -80,18 +79,31 @@ class Login extends StatelessWidget {
                     const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18),
-                      child: CustomAuth(
-                        validator: (value){
-                          if(value!.isEmpty){
-                            return 'required';
-                          }return null;
-                        },
-                        controller: authController.loginPassword,
-                        labelText: 'Password',
-                        prefixIcon: const Icon(Icons.key, color: Colors.black),
-                        obscureText: true,
-                        suffixIcon: const Icon(Icons.visibility_off, color: Colors.black),
-                        hintText: 'Enter your password',
+                      child: Obx(
+                            () => CustomAuth(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'required';
+                            }
+                            return null;
+                          },
+                          controller: authController.loginPassword,
+                          labelText: 'Password',
+                          prefixIcon: const Icon(Icons.key, color: Colors.black),
+                          obscureText: authController.isPasswordVisibility1.value,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              authController.isPasswordVisibility1.value
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.black,
+                            ),
+                            onPressed: () {
+                              authController.togglePasswordVisibility1();
+                            },
+                          ),
+                          hintText: 'Enter your password',
+                        ),
                       ),
                     ),
                     Padding(
@@ -111,21 +123,25 @@ class Login extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 15),
-                  Obx(()=> authController.isLoading.value?Center(
-                    child: const SpinKitCircle(color: Colors.blue, size: 30.0),
-                  ):Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: CustomButton(
-                      onTap: (){
-                        if(authController.loginKey.currentState!.validate()){
-                          authController.login();
-                        }
-                      },
-                      color: Colors.blue,
-                      label: 'Login',
-                      labelColor: Colors.white,
+                    Obx(
+                          () => authController.isLoading.value
+                          ? Center(
+                        child: const SpinKitCircle(color: Colors.blueAccent, size: 30.0),
+                      )
+                          : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: CustomButton(
+                          onTap: () {
+                            if (authController.loginKey.currentState!.validate()) {
+                              authController.login();
+                            }
+                          },
+                          color: Colors.blue,
+                          label: 'Login',
+                          labelColor: Colors.white,
+                        ),
+                      ),
                     ),
-                  ),),
                     Padding(
                       padding: const EdgeInsets.only(top: 15, left: 10, right: 10, bottom: 20),
                       child: Row(
@@ -142,8 +158,8 @@ class Login extends StatelessWidget {
                           const SizedBox(width: 7),
                           GestureDetector(
                             onTap: () {
-                              Future.delayed(Duration(milliseconds: 500),(){
-                                Get.off(() =>  Register(), transition: Transition.fade);
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                Get.off(() => Register(), transition: Transition.fade);
                               });
                             },
                             child: Text(
@@ -168,4 +184,3 @@ class Login extends StatelessWidget {
     );
   }
 }
-

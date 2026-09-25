@@ -1,4 +1,4 @@
-import 'package:app_name/app/controllers/firebase/firebase_controller.dart';
+﻿import 'package:app_name/app/controllers/firebase/firebase_controller.dart';
 import 'package:app_name/app/widgets/custom_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,206 +17,209 @@ class RiderDrawerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: Colors.grey.shade200,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            /*Container(
-              height:280,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(17),
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 30,),
+              /*Container(
+                height:280,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(17),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(.06),
+                        blurRadius: 10,
+                        spreadRadius: 10,
+                        offset: Offset(0,0)
+                    )
+                  ],
                 ),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black.withOpacity(.06),
-                      blurRadius: 10,
-                      spreadRadius: 10,
-                      offset: Offset(0,0)
-                  )
-                ],
-              ),
-              ///TODO profile section
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 60,),
-                  GestureDetector(
-                    onTap: (){
-                      //firebaseController.pickImage();
-                    },
-                    child: Container(
-                        height: 150,
-                        width: 150,
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(.02),
-                                blurRadius: 10,
-                                spreadRadius: 10,
-                                offset: Offset(0,0)
-                            )
-                          ],
-                          color: Colors.grey.shade100,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Center(
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Icon(CupertinoIcons.photo_fill,
-                                color: Colors.grey,size: 100,),
-                              Icon(CupertinoIcons.add,
-                                color: Colors.black.withOpacity(.4),size: 40,),
+                ///TODO profile section
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 60,),
+                    GestureDetector(
+                      onTap: (){
+                        //firebaseController.pickImage();
+                      },
+                      child: Container(
+                          height: 150,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black.withOpacity(.02),
+                                  blurRadius: 10,
+                                  spreadRadius: 10,
+                                  offset: Offset(0,0)
+                              )
                             ],
+                            color: Colors.grey.shade100,
+                            shape: BoxShape.circle,
                           ),
-                        )),
+                          child: Center(
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Icon(CupertinoIcons.photo_fill,
+                                  color: Colors.grey,size: 100,),
+                                Icon(CupertinoIcons.add,
+                                  color: Colors.black.withOpacity(.4),size: 40,),
+                              ],
+                            ),
+                          )),
+                    ),
+                    InkWell(
+                      onTap: (){
+                        changeName();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20,left: 10,right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Center(child: Icon(Icons.edit,color: Colors.grey.shade300,size: 25,)),
+                            const SizedBox(width: 45,),
+                            Text('Rabbi',style: GoogleFonts.numans(
+                              color: Colors.white,
+                              fontSize: 23,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.2,
+                            ),),
+                          ],),
+                      ),
+                    ),
+                  ],
+                ),
+              ),*/
+        
+              // --- Find Order Item ---
+              Padding(
+                padding: const EdgeInsets.only(top: 8, left: 17, right: 17),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.white.withOpacity(.7),
+                    border: Border.all(color: Colors.blue.withOpacity(.2), width: 0.5),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(.03),
+                        blurRadius: 10,
+                        spreadRadius: 10,
+                        offset: const Offset(0, 0),
+                      )
+                    ],
                   ),
-                  InkWell(
-                    onTap: (){
-                      changeName();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20,left: 10,right: 10),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: IntrinsicHeight(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Center(child: Icon(Icons.edit,color: Colors.grey.shade300,size: 25,)),
-                          const SizedBox(width: 45,),
-                          Text('Rabbi',style: GoogleFonts.numans(
-                            color: Colors.white,
-                            fontSize: 23,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.2,
-                          ),),
-                        ],),
-                    ),
-                  ),
-                ],
-              ),
-            ),*/
-
-            // --- Find Order Item ---
-            Padding(
-              padding: const EdgeInsets.only(top: 8, left: 17, right: 17),
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Colors.white.withOpacity(.7),
-                  border: Border.all(color: Colors.blue.withOpacity(.2), width: 0.5),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(.03),
-                      blurRadius: 10,
-                      spreadRadius: 10,
-                      offset: const Offset(0, 0),
-                    )
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: IntrinsicHeight(
-                    child: Row(
-                      children: [
-                        // Left-side low width, full height blue bar
-                        Obx(() => Container(
-                          width: riderController.selectedItemIndex.value == 0 ? 5.0 : 0.0,
-                          color: Colors.blue,
-                        )),
-                        Expanded(
-                          child: ListTile(
-                            onTap: () {
-                              riderController.goToFindOrder();
-                            },
-                            leading: const Icon(Icons.bookmark_border, color: Colors.blue),
-                            title: Text(
-                              'Find order',
-                              style: GoogleFonts.numans(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                          // Left-side low width, full height blue bar
+                          Obx(() => Container(
+                            width: riderController.selectedItemIndex.value == 0 ? 5.0 : 0.0,
+                            color: Colors.blue,
+                          )),
+                          Expanded(
+                            child: ListTile(
+                              onTap: () {
+                                riderController.goToFindOrder();
+                              },
+                              leading: const Icon(Icons.bookmark_border, color: Colors.blue),
+                              title: Text(
+                                'Find order',
+                                style: GoogleFonts.numans(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                            subtitle: Text(
-                              'Easy delivery',
-                              style: GoogleFonts.numans(
-                                color: Colors.grey,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
+                              subtitle: Text(
+                                'Easy delivery',
+                                style: GoogleFonts.numans(
+                                  color: Colors.grey,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-
-            // --- Logout Item ---
-            Padding(
-              padding: const EdgeInsets.only(top: 8, left: 17, right: 17),
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: Colors.blue.withOpacity(.2), width: 0.5),
-                  color: Colors.white.withOpacity(.7),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(.03),
-                      blurRadius: 10,
-                      spreadRadius: 10,
-                      offset: const Offset(0, 0),
-                    )
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: IntrinsicHeight(
-                    child: Row(
-                      children: [
-                        // Left-side low width, full height red bar
-                        Obx(() => Container(
-                          width: riderController.selectedItemIndex.value == 1 ? 5.0 : 0.0,
-                          color: Colors.red,
-                        )),
-                        Expanded(
-                          child: ListTile(
-                            onTap: () {
-                              riderController.selectLogout();
-                              logout();
-                            },
-                            leading: const Icon(Icons.logout, color: Colors.red),
-                            title: Text(
-                              'Logout',
-                              style: GoogleFonts.numans(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+        
+              // --- Logout Item ---
+              Padding(
+                padding: const EdgeInsets.only(top: 8, left: 17, right: 17),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: Colors.blue.withOpacity(.2), width: 0.5),
+                    color: Colors.white.withOpacity(.7),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(.03),
+                        blurRadius: 10,
+                        spreadRadius: 10,
+                        offset: const Offset(0, 0),
+                      )
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: IntrinsicHeight(
+                      child: Row(
+                        children: [
+                          // Left-side low width, full height red bar
+                          Obx(() => Container(
+                            width: riderController.selectedItemIndex.value == 1 ? 5.0 : 0.0,
+                            color: Colors.red,
+                          )),
+                          Expanded(
+                            child: ListTile(
+                              onTap: () {
+                                riderController.selectLogout();
+                                logout();
+                              },
+                              leading: const Icon(Icons.logout, color: Colors.red),
+                              title: Text(
+                                'Logout',
+                                style: GoogleFonts.numans(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                            subtitle: Text(
-                              'Logout your account',
-                              style: GoogleFonts.numans(
-                                color: Colors.grey,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
+                              subtitle: Text(
+                                'Logout your account',
+                                style: GoogleFonts.numans(
+                                  color: Colors.grey,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 17),
-          ],
+              const SizedBox(height: 17),
+            ],
+          ),
         ),
       ),
     );
@@ -359,3 +362,4 @@ class RiderDrawerScreen extends StatelessWidget {
     );
   }
 }
+

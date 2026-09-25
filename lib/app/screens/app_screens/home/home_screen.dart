@@ -1,4 +1,4 @@
-import 'package:app_name/app/controllers/firebase/firebase_controller.dart';
+﻿import 'package:app_name/app/controllers/firebase/firebase_controller.dart';
 import 'package:app_name/app/screens/app_screens/drawer/drawer_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -80,7 +80,7 @@ class HomeScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 30, left: 10, right: 10),
                 child: Obx(() {
-                  if (firebaseController.isLoading.value) return const Center(child: const SpinKitCircle(color: Colors.blue, size: 30.0));
+                  if (firebaseController.isLoading.value) return const Center(child: const SpinKitCircle(color: Colors.blueAccent, size: 30.0));
                   if (!firebaseController.isSearchPerformed.value) {
                     return Center(child: Text("Search for a parcel",style: GoogleFonts.numans(
                       color: Colors.grey,
@@ -170,3 +170,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+

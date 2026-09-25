@@ -1,14 +1,12 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-
 
 class CustomAuth extends StatelessWidget {
   final String labelText;
   final String hintText;
   final Widget? prefixIcon;
-  final Icon? suffixIcon;
+  final Widget? suffixIcon; // Changed from Icon? to Widget?
   final bool obscureText;
   final VoidCallback? onSuffixTap;
   final TextEditingController? controller;
@@ -35,7 +33,7 @@ class CustomAuth extends StatelessWidget {
       obscureText: obscureText,
       validator: validator,
       onTap: onTap,
-      style:  GoogleFonts.numans(
+      style: GoogleFonts.numans(
         color: Colors.black,
         fontSize: 17,
         fontWeight: FontWeight.w500,
@@ -46,14 +44,16 @@ class CustomAuth extends StatelessWidget {
         hintText: hintText,
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon != null
-            ? IconButton(
+            ? (suffixIcon is IconButton
+            ? suffixIcon
+            : IconButton(
           icon: suffixIcon!,
           onPressed: onSuffixTap,
-        )
+        ))
             : null,
         labelStyle: const TextStyle(color: Colors.black),
-        floatingLabelStyle: TextStyle(color: Colors.black),
-        hintStyle:GoogleFonts.numans(color: Colors.black),
+        floatingLabelStyle: const TextStyle(color: Colors.black),
+        hintStyle: GoogleFonts.numans(color: Colors.black),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -63,11 +63,11 @@ class CustomAuth extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.black, width: 1),
+          borderSide: const BorderSide(color: Colors.black, width: 1),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.red, width: 1),
+          borderSide: const BorderSide(color: Colors.red, width: 1),
         ),
         filled: true,
         fillColor: Colors.white,

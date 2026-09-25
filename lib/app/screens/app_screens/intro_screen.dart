@@ -1,4 +1,4 @@
-import 'package:app_name/app/configs/my_themes.dart';
+﻿import 'package:app_name/app/configs/my_themes.dart';
 import 'package:app_name/app/controllers/app_controllers/intro_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -35,4 +35,5 @@ class IntroScreen extends StatelessWidget {
     );
   }
 }
+
 

@@ -71,7 +71,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 //                     ),
 //                     const SizedBox(height: 20),
 //                     Obx(()=> firebaseController.isLoading.value?Center(
-//                       child: const SpinKitCircle(color: Colors.blue, size: 30.0),
+//                       child: const SpinKitCircle(color: Colors.blueAccent, size: 30.0),
 //                     ):Padding(
 //                       padding: const EdgeInsets.symmetric(horizontal: 10),
 //                       child: CustomButton(
@@ -168,5 +168,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 //   }
 //
 // }
+
 
 

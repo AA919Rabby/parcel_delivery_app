@@ -1,4 +1,4 @@
-import 'package:app_name/app/controllers/firebase/firebase_controller.dart';
+﻿import 'package:app_name/app/controllers/firebase/firebase_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +68,7 @@ class RiderFindOrder extends StatelessWidget {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: const SpinKitCircle(color: Colors.blue, size: 30.0));
+                    return const Center(child: const SpinKitCircle(color: Colors.blueAccent, size: 30.0));
                   }
 
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -160,7 +160,7 @@ class RiderFindOrder extends StatelessWidget {
                                   ],
                                 ),
                                 trailing: Text(
-                                  '৳${parcel['total_amount']}',
+                                  'à§³${parcel['total_amount']}',
                                   style: GoogleFonts.numans(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18),
                                 ),
                               ),
@@ -200,3 +200,4 @@ class RiderFindOrder extends StatelessWidget {
   }
 
 }
+

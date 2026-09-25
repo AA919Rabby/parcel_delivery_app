@@ -376,7 +376,7 @@ class SendParcel extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Obx(()=> parcelController.isLoading.value?Center(
-                  child: const SpinKitCircle(color: Colors.blue, size: 30.0),
+                  child: const SpinKitCircle(color: Colors.blueAccent, size: 30.0),
                 ):CustomButton(
                   onTap: (){
                     if(parcelController.sendParcelKey.currentState!.validate()){
@@ -449,5 +449,6 @@ class SendParcel extends StatelessWidget {
    }
 
 }
+
 
 
