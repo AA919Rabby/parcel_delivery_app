@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 class RecentlySend extends StatelessWidget {
   RecentlySend({super.key});
 
-  final firebaseController = Get.put(FirebaseController()); // Initialize controller for making calls
+  final firebaseController = Get.put(FirebaseController());
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,6 @@ class RecentlySend extends StatelessWidget {
       body: SafeArea(
           child: Column(
             children: [
-              // Top Section Gradient
               Container(
                 height: MediaQuery.of(context).size.height * 0.18,
                 width: double.infinity,
@@ -98,7 +97,9 @@ class RecentlySend extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 20),
                       itemBuilder: (context, index) {
                         var parcel = snapshot.data!.docs[index];
-                        String statusStr = parcel['status'].toString().toLowerCase();
+                        String rawStatus = parcel['status'].toString().toLowerCase();
+
+                        String displayStatus = (rawStatus == 'received at warehouse') ? 'Pending' : parcel['status'];
 
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -155,6 +156,7 @@ class RecentlySend extends StatelessWidget {
                                 Text('To: ${parcel['receiver_name']}', overflow: TextOverflow.ellipsis, maxLines: 1, style: GoogleFonts.numans(fontWeight: FontWeight.bold, fontSize: 16)),
                                 const SizedBox(height: 5),
                                 Text('Pickup: ${parcel['sender_address']}', overflow: TextOverflow.ellipsis, maxLines: 1, style: GoogleFonts.numans(fontSize: 13, color: Colors.grey.shade600)),
+                                Text('Pickup Phone: ${parcel['sender_phone']}', overflow: TextOverflow.ellipsis, maxLines: 1, style: GoogleFonts.numans(fontSize: 13, color: Colors.grey.shade600)),
                                 Text('Receiver: ${parcel['receiver_address']}', overflow: TextOverflow.ellipsis, maxLines: 1, style: GoogleFonts.numans(fontSize: 13, color: Colors.black87)),
                                 const SizedBox(height: 15),
 
@@ -181,26 +183,26 @@ class RecentlySend extends StatelessWidget {
                                     Container(
                                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                       decoration: BoxDecoration(
-                                        color: statusStr == 'pending' || statusStr == 'received at warehouse' ? Colors.orange.withOpacity(0.1)
-                                            : statusStr.contains('deliver') ? Colors.green.withOpacity(0.1) : Colors.blue.withOpacity(0.1),
+                                        color: rawStatus == 'pending' || rawStatus == 'received at warehouse' ? Colors.orange.withOpacity(0.1)
+                                            : rawStatus.contains('deliver') ? Colors.green.withOpacity(0.1) : Colors.blue.withOpacity(0.1),
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       child: Text(
-                                        'Status: ${parcel['status']}',
+                                        'Status: $displayStatus',
                                         style: GoogleFonts.numans(
                                           fontSize: 12,
                                           fontWeight: FontWeight.bold,
-                                          color: statusStr == 'pending' || statusStr == 'received at warehouse' ? Colors.orange.shade700
-                                              : statusStr.contains('deliver') ? Colors.green.shade700 : Colors.blueAccent,
+                                          color: rawStatus == 'pending' || rawStatus == 'received at warehouse' ? Colors.orange.shade700
+                                              : rawStatus.contains('deliver') ? Colors.green.shade700 : Colors.blueAccent,
                                         ),
                                       ),
                                     ),
 
                                     Row(
                                       children: [
-                                        // Call Rider Button linked strictly to 01402977919
+                                        // USING DYNAMIC FIREBASE LOGIC ONLY
                                         GestureDetector(
-                                          onTap: () => firebaseController.makePhoneCall('01402977919'),
+                                          onTap: () => firebaseController.makePhoneCall(parcel['rider_phone'] ?? ""),
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                             margin: const EdgeInsets.only(right: 8),
@@ -218,8 +220,7 @@ class RecentlySend extends StatelessWidget {
                                           ),
                                         ),
 
-                                        // Cancel Button - Only shows when it's pending/received at warehouse
-                                        if (statusStr == 'pending' || statusStr == 'received at warehouse')
+                                        if (rawStatus == 'pending' || rawStatus == 'received at warehouse')
                                           GestureDetector(
                                             onTap: () {
                                               showDialog(

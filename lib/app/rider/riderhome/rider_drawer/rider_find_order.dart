@@ -1,5 +1,6 @@
 ﻿import 'package:app_name/app/controllers/firebase/firebase_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,9 +24,8 @@ class RiderFindOrder extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // Top section with Gradient
+            // Top section with Gradient (Height removed to prevent overflow)
             Container(
-              height: MediaQuery.of(context).size.height * 0.18,
               width: double.infinity,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -42,8 +42,9 @@ class RiderFindOrder extends StatelessWidget {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(top: 15, left: 20, right: 20),
+                padding: const EdgeInsets.only(top: 15, left: 20, right: 20, bottom: 25),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min, // Prevents overflow
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -160,7 +161,22 @@ class RiderFindOrder extends StatelessWidget {
                                       children: [
                                         Text('Sender', style: GoogleFonts.numans(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.w600)),
                                         Text('${parcel['sender_name']}', overflow: TextOverflow.ellipsis, style: GoogleFonts.numans(fontSize: 13, color: Colors.black87, fontWeight: FontWeight.bold)),
-                                        Text('${parcel['sender_phone']}', style: GoogleFonts.numans(fontSize: 12, color: Colors.black87)),
+
+                                        // CLICKABLE SENDER PHONE
+                                        GestureDetector(
+                                          onTap: () => firebaseController.makePhoneCall(parcel['sender_phone'] ?? ""),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 4),
+                                            child: Row(
+                                              children: [
+                                                const Icon(CupertinoIcons.phone_fill, size: 14, color: Colors.blueAccent),
+                                                const SizedBox(width: 4),
+                                                Expanded(child: Text('${parcel['sender_phone']}', style: GoogleFonts.numans(fontSize: 12, color: Colors.blueAccent, fontWeight: FontWeight.w600))),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+
                                         Text('${parcel['sender_address']}', overflow: TextOverflow.ellipsis, maxLines: 2, style: GoogleFonts.numans(fontSize: 12, color: Colors.grey.shade600)),
                                       ],
                                     ),
@@ -171,7 +187,22 @@ class RiderFindOrder extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text('Receiver', style: GoogleFonts.numans(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.w600)),
-                                        Text('${parcel['receiver_phone']}', style: GoogleFonts.numans(fontSize: 13, color: Colors.black87, fontWeight: FontWeight.bold)),
+
+                                        // CLICKABLE RECEIVER PHONE
+                                        GestureDetector(
+                                          onTap: () => firebaseController.makePhoneCall(parcel['receiver_phone'] ?? ""),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 4),
+                                            child: Row(
+                                              children: [
+                                                const Icon(CupertinoIcons.phone_fill, size: 14, color: Colors.green),
+                                                const SizedBox(width: 4),
+                                                Expanded(child: Text('${parcel['receiver_phone']}', style: GoogleFonts.numans(fontSize: 13, color: Colors.green.shade700, fontWeight: FontWeight.bold))),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+
                                         Text('${parcel['receiver_address']}', overflow: TextOverflow.ellipsis, maxLines: 2, style: GoogleFonts.numans(fontSize: 12, color: Colors.grey.shade600)),
                                       ],
                                     ),

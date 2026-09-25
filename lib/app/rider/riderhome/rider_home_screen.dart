@@ -30,9 +30,8 @@ class RiderHomeScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // Header Section with Gradient
+            // Header Section with Gradient (FIXED OVERFLOW ERROR)
             Container(
-              height: MediaQuery.of(context).size.height * 0.16,
               width: double.infinity,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -49,16 +48,17 @@ class RiderHomeScreen extends StatelessWidget {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 25), // Uses padding instead of fixed height
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min, // Prevents overflow completely
                   children: [
                     GestureDetector(
                         onTap: () => _scaffoldKey.currentState!.openDrawer(),
                         child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(10)),
-                            child: const Icon(Icons.menu_open, color: Colors.white, size: 28)
+                            child: const Icon(Icons.menu, color: Colors.white, size: 28)
                         )),
                     const SizedBox(height: 15),
                     Text("Check point",
@@ -88,7 +88,6 @@ class RiderHomeScreen extends StatelessWidget {
                     activeParcels = snapshot.data!.docs.where((doc) => doc['status'].toString().toLowerCase() != 'delivery complete').toList();
                   }
 
-                  // Enhanced Empty View
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty || activeParcels.isEmpty) {
                     return Center(
                       child: Column(
@@ -118,6 +117,10 @@ class RiderHomeScreen extends StatelessWidget {
                       String currentStatus = data['status'] ?? 'Pending';
                       String displayAddress = data['receiver_address'] ?? data['address'] ?? "Address not provided";
                       String pickupAddress = data['pickup_address'] ?? data['sender_address'] ?? "Pickup point";
+
+                      // Using dynamic DB phone numbers
+                      String senderPhone = data['sender_phone'] ?? "";
+                      String receiverPhone = data['receiver_phone'] ?? "";
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -154,52 +157,87 @@ class RiderHomeScreen extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(vertical: 12),
                                 child: Divider(color: Color(0xFFEEEEEE), thickness: 1),
                               ),
+
+                              // PICKUP / SENDER DETAILS
                               Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Icon(Icons.my_location, size: 16, color: Colors.blue),
                                   const SizedBox(width: 8),
-                                  Expanded(child: Text("Pickup: $pickupAddress", style: GoogleFonts.numans(fontSize: 13, color: Colors.grey.shade700))),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  const Icon(Icons.location_on, size: 16, color: Colors.redAccent),
-                                  const SizedBox(width: 8),
-                                  Expanded(child: Text("Drop: $displayAddress", style: GoogleFonts.numans(fontSize: 13, color: Colors.black87, fontWeight: FontWeight.w600))),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Sender: $pickupAddress", style: GoogleFonts.numans(fontSize: 13, color: Colors.grey.shade700)),
+                                        const SizedBox(height: 4),
+                                        // Clickable Sender Phone
+                                        GestureDetector(
+                                          onTap: () => controller.makePhoneCall(senderPhone),
+                                          child: Row(
+                                            children: [
+                                              const Icon(CupertinoIcons.phone_circle_fill, color: Colors.blueAccent, size: 16),
+                                              const SizedBox(width: 4),
+                                              Text(senderPhone.isNotEmpty ? senderPhone : 'N/A', style: GoogleFonts.numans(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.blueAccent)),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 15),
+
+                              // DROP / RECEIVER DETAILS
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("To: ${data['receiver_name'] ?? 'Unknown'}", style: GoogleFonts.numans(fontWeight: FontWeight.bold, fontSize: 14)),
-                                  Text(
-                                    parcel['createdAt'] != null
-                                        ? DateFormat('d MMM, h:mm a').format((parcel['createdAt'] as Timestamp).toDate())
-                                        : '',
-                                    style: GoogleFonts.numans(fontSize: 11, color: Colors.grey.shade500, fontWeight: FontWeight.w600),
+                                  const Icon(Icons.location_on, size: 16, color: Colors.redAccent),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Drop: $displayAddress", style: GoogleFonts.numans(fontSize: 13, color: Colors.black87, fontWeight: FontWeight.w600)),
+                                        const SizedBox(height: 4),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text("To: ${data['receiver_name'] ?? 'Unknown'}", style: GoogleFonts.numans(fontWeight: FontWeight.bold, fontSize: 13)),
+                                            Text(
+                                              parcel['createdAt'] != null
+                                                  ? DateFormat('d MMM, h:mm a').format((parcel['createdAt'] as Timestamp).toDate())
+                                                  : '',
+                                              style: GoogleFonts.numans(fontSize: 11, color: Colors.grey.shade500, fontWeight: FontWeight.w600),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 6),
+                                        // Clickable Receiver Phone
+                                        GestureDetector(
+                                          onTap: () => controller.makePhoneCall(receiverPhone),
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                            decoration: BoxDecoration(color: Colors.green.withOpacity(0.05), borderRadius: BorderRadius.circular(8)),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                const Icon(CupertinoIcons.phone_circle_fill, color: Colors.green, size: 18),
+                                                const SizedBox(width: 6),
+                                                Text(receiverPhone.isNotEmpty ? receiverPhone : 'N/A', style: GoogleFonts.numans(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.green.shade700)),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 8),
-                              GestureDetector(
-                                onTap: () => controller.makePhoneCall(data['receiver_phone'] ?? ""),
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(color: Colors.green.withOpacity(0.05), borderRadius: BorderRadius.circular(8)),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(CupertinoIcons.phone_circle_fill, color: Colors.green, size: 20),
-                                      const SizedBox(width: 8),
-                                      Text("${data['receiver_phone'] ?? 'N/A'}", style: GoogleFonts.numans(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.green.shade700)),
-                                    ],
-                                  ),
-                                ),
-                              ),
+
                               const SizedBox(height: 20),
 
+                              // ACTION BUTTONS
                               Row(
                                 children: [
                                   if (currentStatus.toLowerCase() != 'delivered')
