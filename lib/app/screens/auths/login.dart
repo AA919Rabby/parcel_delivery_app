@@ -111,12 +111,67 @@ class Login extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(
-                            'Forget password ?',
-                            style: GoogleFonts.numans(
-                              color: Colors.grey,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
+                          GestureDetector(
+
+                            // ---------- ADDED: Forgot Password Dialog ----------
+                            onTap: () {
+                              // Pre-fill email if they already started typing it
+                              TextEditingController resetEmailController = TextEditingController(text: authController.loginEmail.text);
+
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text('Reset Password', style: GoogleFonts.numans(fontWeight: FontWeight.bold, color: Colors.blue)),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text('Enter your email address to receive a password reset link.', style: GoogleFonts.numans()),
+                                          const SizedBox(height: 15),
+                                          TextField(
+                                            controller: resetEmailController,
+                                            keyboardType: TextInputType.emailAddress,
+                                            decoration: InputDecoration(
+                                                hintText: "Email",
+                                                prefixIcon: const Icon(Icons.email, color: Colors.blue),
+                                                border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                ),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  borderSide: const BorderSide(color: Colors.blue),
+                                                )
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(context),
+                                          child: Text('Cancel', style: GoogleFonts.numans(color: Colors.grey, fontWeight: FontWeight.bold)),
+                                        ),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                                          onPressed: () {
+                                            Navigator.pop(context); // Close dialog
+                                            authController.resetPassword(resetEmailController.text);
+                                          },
+                                          child: Text('Send Link', style: GoogleFonts.numans(color: Colors.white, fontWeight: FontWeight.bold)),
+                                        ),
+                                      ],
+                                    );
+                                  }
+                              );
+                            },
+                            // ----------------------------------------------------
+
+                            child: Text(
+                              'Forget password ?',
+                              style: GoogleFonts.numans(
+                                color: Colors.grey,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ],
@@ -125,8 +180,8 @@ class Login extends StatelessWidget {
                     const SizedBox(height: 15),
                     Obx(
                           () => authController.isLoading.value
-                          ? Center(
-                        child: const SpinKitCircle(color: Colors.blueAccent, size: 30.0),
+                          ? const Center(
+                        child: SpinKitCircle(color: Colors.blueAccent, size: 30.0),
                       )
                           : Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -158,7 +213,7 @@ class Login extends StatelessWidget {
                           const SizedBox(width: 7),
                           GestureDetector(
                             onTap: () {
-                              Future.delayed(Duration(milliseconds: 500), () {
+                              Future.delayed(const Duration(milliseconds: 500), () {
                                 Get.off(() => Register(), transition: Transition.fade);
                               });
                             },

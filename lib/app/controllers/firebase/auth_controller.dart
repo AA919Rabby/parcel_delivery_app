@@ -104,6 +104,34 @@ class AuthController extends GetxController {
     }
   }
 
+  // ---------- ADDED: Reset Password Logic ----------
+  Future<void> resetPassword(String email) async {
+    try {
+      if (email.isEmpty) {
+        Get.snackbar('Error', 'Please enter your email to reset password.');
+        return;
+      }
+      await auth.sendPasswordResetEmail(email: email.trim());
+      Get.snackbar(
+        'Email Sent',
+        'A password reset link has been sent to $email. Please check your inbox.',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.green,
+        padding: EdgeInsets.only(top: 10),
+        colorText: Colors.white,
+        duration: const Duration(seconds: 4),
+      );
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar(
+        'Error',
+        e.message ?? 'Failed to send reset email.',
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
+    }
+  }
+  // --------------------------------------------------
+
   //user logout
   logoutUser() async {
     await auth.signOut();
