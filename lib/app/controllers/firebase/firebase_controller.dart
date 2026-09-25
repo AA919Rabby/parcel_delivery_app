@@ -23,7 +23,9 @@ class FirebaseController extends GetxController{
 
   void togglePasswordVisibility() {
     isPasswordHidden.value = !isPasswordHidden.value;
-  }  var isLoading7=false.obs;
+  }
+  var isLoading8=false.obs;
+  var isLoading7=false.obs;
   var isLoading6=false.obs;
   var isLoading5=false.obs;
   var isLoading4=false.obs;
@@ -234,7 +236,7 @@ class FirebaseController extends GetxController{
     }
 
     try {
-      isLoading3.value = true;
+      isLoading8.value = true;
       await db.collection('parcels').doc(docId).update({
         'status': nextStatus,
       });
@@ -242,7 +244,7 @@ class FirebaseController extends GetxController{
     } catch (e) {
       Get.snackbar('Error', 'Update failed: $e');
     } finally {
-      isLoading3.value = false;
+      isLoading8.value = false;
     }
   }
 
