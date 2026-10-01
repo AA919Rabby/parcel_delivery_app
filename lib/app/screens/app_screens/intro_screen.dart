@@ -6,14 +6,12 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
-
-
 class IntroScreen extends StatelessWidget {
   IntroScreen({super.key});
   final introController=Get.put(IntroController());
   @override
   Widget build(BuildContext context) {
-  //  introController.checkUser();
+    //  introController.checkUser();
     return Scaffold(
       backgroundColor:Colors.blue,
       body: Container(
@@ -35,5 +33,3 @@ class IntroScreen extends StatelessWidget {
     );
   }
 }
-
-

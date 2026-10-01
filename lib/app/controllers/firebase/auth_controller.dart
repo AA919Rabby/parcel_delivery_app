@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // <-- ADDED THIS IMPORT
 
 class AuthController extends GetxController {
   //login
@@ -56,6 +57,13 @@ class AuthController extends GetxController {
         email: loginEmail.text.trim(),
         password: loginPassword.text.trim(),
       );
+
+      // --- ADDED: CACHE LOGIN STATE LOCALLY TO PREVENT KICK OUTS FOR CUSTOMERS ---
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
+      await prefs.setString('userRole', 'user');
+      // ---------------------------------------------------------------------------
+
       Get.offAll(() => HomeScreen());
       Get.snackbar('Welcome back', 'Login as ${loginEmail.text.trim()}');
       loginEmail.clear();
@@ -85,6 +93,7 @@ class AuthController extends GetxController {
           'username': registerUsername.text.trim(),
           'email': registerEmail.text.trim(),
           'createdAt': Timestamp.now(),
+          'role': 'user', // Just making sure role is saved correctly in Firestore
         });
       }
       Get.off(() => Login());
@@ -134,6 +143,11 @@ class AuthController extends GetxController {
 
   //user logout
   logoutUser() async {
+    // --- ADDED: CLEAR CACHE ON EXPLICIT LOGOUT ---
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    // ---------------------------------------------
+
     await auth.signOut();
     Get.offAll(() => Auth());
   }

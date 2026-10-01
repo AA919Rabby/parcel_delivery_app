@@ -267,7 +267,7 @@ class RiderHomeScreen extends StatelessWidget {
                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                       ),
                                       onPressed: () => controller.updateParcelStatus(parcel.id, currentStatus),
-                                      child: Obx(() => controller.isLoading8.value
+                                      child: Obx(() => controller.updatingParcelId.value == parcel.id // <-- FIXED: Target specific ID
                                           ? const SizedBox(height: 18, width: 18, child: SpinKitCircle(color: Colors.white, size: 18.0))
                                           : Text(
                                         "Mark Delivered",

@@ -9,8 +9,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-
+import 'package:shared_preferences/shared_preferences.dart'; // <-- ADDED
 
 class FirebaseController extends GetxController {
   final searchController = TextEditingController();
@@ -21,6 +20,8 @@ class FirebaseController extends GetxController {
   void togglePasswordVisibility() {
     isPasswordHidden.value = !isPasswordHidden.value;
   }
+
+  var updatingParcelId = ''.obs; // <-- ADDED: Specific Tracker for Loading Items
 
   var isLoading8 = false.obs;
   var isLoading7 = false.obs;
@@ -161,6 +162,12 @@ class FirebaseController extends GetxController {
         'status': 'active',
       });
 
+      // --- ADDED: CACHE LOGIN STATE LOCALLY TO PREVENT KICK OUTS ---
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
+      await prefs.setString('userRole', 'rider');
+      // -------------------------------------------------------------
+
       Get.offAll(() => RiderHomeScreen());
       Get.snackbar('Welcome back', 'Login as ${riderLogin.text.trim()}');
 
@@ -194,7 +201,7 @@ class FirebaseController extends GetxController {
   // DIRECTLY MARKS COMPLETE IN ONE STEP (REMOVED 2-STEP "DELIVERY COMPLETE")
   updateParcelStatus(String docId, String currentStatus) async {
     try {
-      isLoading8.value = true;
+      updatingParcelId.value = docId; // <-- FIXED: Track precise item
       await db.collection('parcels').doc(docId).update({
         'status': "Delivered",
       });
@@ -202,7 +209,7 @@ class FirebaseController extends GetxController {
     } catch (e) {
       Get.snackbar('Error', 'Update failed: $e');
     } finally {
-      isLoading8.value = false;
+      updatingParcelId.value = ''; // <-- FIXED: clear on finish
     }
   }
 
@@ -210,6 +217,12 @@ class FirebaseController extends GetxController {
     try {
       isLoading4.value = true;
       await auth.signOut();
+
+      // --- ADDED: CLEAR CACHE ON EXPLICIT LOGOUT ---
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+      // ---------------------------------------------
+
       searchResult.clear();
       isSearchPerformed.value = false;
       riderPhoneNumber.clear();
