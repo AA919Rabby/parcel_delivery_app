@@ -136,19 +136,13 @@ flutter build appbundle --release
 
 ## Roadmap
 
-- In-app map view and live rider location tracking
-- Push notifications for parcel status changes
+- In-app view and live rider  tracking
 - Unit, widget, and integration tests
-- In-app payments
-- Play Store release
 
 ## License
 
 This project is private and intended for portfolio demonstration.
 
 ## Author
-
-**Your Name**: Flutter developer
-[LinkedIn](https://linkedin.com/in/your-profile) · [Portfolio](https://your-portfolio.com)
 
 Open to collaboration and job opportunities. Feel free to reach out.
