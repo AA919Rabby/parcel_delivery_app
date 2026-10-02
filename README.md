@@ -24,7 +24,8 @@ This project demonstrates a complete two-sided delivery platform: a customer exp
 - **Delivery history**: view recently sent parcels and their delivery status.
 - **Location support**: location and address lookup, with locations opened in an external maps app.
 
-### Rider
+### Ride
+*In a real-world scenario, riders must submit all their documents and receive their credentials before they can log in. For this demo, use rider@gmail.com with the password 12345678 to log in as a rider.
 - **Rider dashboard**: a dedicated interface for delivery personnel.
 - **Order management**: view and accept delivery orders.
 - **Navigation**: open pickup and delivery locations in an external maps app for turn-by-turn directions.
